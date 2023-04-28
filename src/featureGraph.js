@@ -23,7 +23,7 @@ export function featureGraph(audioContext, pitchCallback, pitchVectorCallback) {
     }
     if (navigator.getUserMedia) {
       status('Initializing audio graph...')
-      navigator.getUserMedia({audio: true}, function(stream) {
+      navigator.getUserMedia({audio: true}, async function(stream) {
         status('Setting up AudioContext ...');
         console.log('Audio context sample rate = ' + audioContext.sampleRate);
         const mic = audioContext.createMediaStreamSource(stream);
@@ -34,7 +34,7 @@ export function featureGraph(audioContext, pitchCallback, pitchVectorCallback) {
         for (var bufferSize = 4; bufferSize < minBufferSize; bufferSize *= 2);
         console.log('Buffer size = ' + bufferSize);
 
-        const scriptNode = makeCrepeScriptNode(audioContext, bufferSize, pitchCallback, pitchVectorCallback )
+        const scriptNode = await makeCrepeScriptNode(audioContext, bufferSize, pitchCallback, pitchVectorCallback )
 
         // It seems necessary to connect the stream to a sink for the pipeline to work, contrary to documentataions.
         // As a workaround, here we create a gain node with zero gain, and connect temp to the system audio output.

@@ -8,7 +8,7 @@
 */ 
 import '../libs/tfjs-0.8.0.min.js'; // defines tf in the global space
 
-export function makeCrepeScriptNode(audioContext, bufferSize, pitchCallback, pitchVectorCallback ) {
+export async function makeCrepeScriptNode(audioContext, bufferSize, pitchCallback, pitchVectorCallback ) {
     console.log(`loaded crepeScriptNode module`)
     function status(message) {
         document.getElementById('status').innerHTML = message;  // useful for phones with no console.
@@ -72,14 +72,14 @@ export function makeCrepeScriptNode(audioContext, bufferSize, pitchCallback, pit
     async function initTF() {
         try {
             status('Loading Keras model...');
-            window.model = await tf.loadModel('model/model.json');
+            window.model = await tf.loadModel('src/model/model.json');
             status('Model loading complete');
 
         } catch (e) {
             throw error(e);
         }
     }
-    initTF();
+    await initTF();
 
 
     // bin number -> cent value mapping
